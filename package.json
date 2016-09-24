@@ -31,7 +31,6 @@
     "index.js"
   ],
   "dependencies": {
-    // "cordova-config": "^0.6.1",
     "cordova-config": "git://github.com/CharityDynamics/cordova-config.git",
     "gulp-util": "^3.0.4",
     "through2": "^2.0.0"
