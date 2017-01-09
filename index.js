@@ -15,23 +15,13 @@ var path = require('path'),
 
 // export the module
 module.exports = function(version, versionCodes) {
-
-    var project;
-    
     // Make it a default object if it is not provided
     versionCodes = versionCodes || {};
 
     return through.obj(function(file, enc, cb) {
-        project = file;
-
-        // Pipe the file to the next step
-        this.push(file);
-
-        cb();
-    }, function(cb) {
         try {
             // Load the config.xml file
-            var config = new Config(path.join(project.path, 'config.xml'));
+            var config = new Config(path.join(file.path, 'config.xml'));
 
 			// Sets the version
             config.setVersion(version);
@@ -46,11 +36,12 @@ module.exports = function(version, versionCodes) {
                 config.setIOSBundleVersion(versionCodes.iosBundleVersion);
             }
 
-            // Write the config file
-            config.write(function() {
-				// Call the callback
-				cb();
-			});
+            self = this;
+            config.write()
+            .then(function() {
+                self.push(file);
+                cb();
+            })
         }
         catch(err) {
 			// Oh no, something happened!
