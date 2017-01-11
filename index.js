@@ -36,12 +36,14 @@ module.exports = function(version, versionCodes) {
                 config.setIOSBundleVersion(versionCodes.iosBundleVersion);
             }
 
-            self = this;
+            // Write the config file
+            var self = this;
             config.write()
             .then(function() {
+                // Pipe the file to the next step
                 self.push(file);
                 cb();
-            })
+            });
         }
         catch(err) {
 			// Oh no, something happened!
